@@ -9,18 +9,15 @@ Debugging: GPT-5 Thinking
 
 ## The background:  
   
-While chatting with an AI, 
-I asked it if it was possible to install the latest NetBSD on an old Pentium-M machine and then run an application
-using Python 3, Pygame, and PyOpenGL.
-The answer was that the latest PyOpenGL does not support Pentium-M, making it practically impossible.
-At that point, it suggested, "Why not port the application from Python to C++?"
-??? That's it! With the help of AI now, porting from Python to C++
-might be incredibly quick!
-  
-And that's exactly what this project is about.
-The porting went smoothly, and debugging was completed in about 10 hours.
+While chatting with an AI, I asked it if it was possible to install the latest NetBSD on an old Pentium-M machine and then run an application using Python 3, Pygame, and PyOpenGL.
+The answer was that the latest PyOpenGL doesn't support Pentium-M, making it practically impossible.
+At that point, the AI ​​suggested, "Why not port the application from Python to C++?"
+
+??? That's it! With the help of the AI ​​now, porting from Python to C++ might be something I could do in no time!
+And that's exactly what this project is.
+The porting went smoothly, and including debugging, it was finished in about 10 hours.
 Amazing, isn't it?  
-    
+  
 # Library Installation:
 
 ## On Linux:
