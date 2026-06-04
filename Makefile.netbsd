@@ -1,0 +1,141 @@
+# Makefile for Flight Simulator (NetBSD / bmake)
+# Usage:
+#   make          - build release
+#   make debug    - build debug
+#   make clean    - remove build files
+#   make run      - build and run
+
+CXX=		/usr/pkg/gcc8/bin/g++
+CC=		/usr/pkg/gcc8/bin/gcc
+
+CXXFLAGS=	-std=c++17 -Wall -Wextra -O2 -Wno-unused-parameter
+
+# インクルードパス
+INCLUDES=	-Isrc \
+		-I/usr/pkg/include \
+		-I/usr/X11R7/include
+
+# リンクフラグ
+LDFLAGS=	-L/usr/pkg/lib \
+		-L/usr/X11R7/lib \
+		-Wl,-rpath,/usr/pkg/lib \
+		-Wl,-rpath,/usr/X11R7/lib
+
+# リンクライブラリ
+LIBS=		-lglfw \
+		-lGLEW \
+		-lGL \
+		-lGLU \
+		-lm
+
+# ターゲット
+TARGET=		flight_sim
+TARGET_DEBUG=	flight_sim_debug
+
+# ビルドディレクトリ
+BUILD_DIR=	build
+
+# ヘッダーファイル
+HDRS=		src/plane.h \
+		src/target.h \
+		src/camera.h \
+		src/terrain.h \
+		src/renderer.h \
+		src/model.h \
+		src/vector3.h \
+		src/common.h
+
+# オブジェクトファイル（明示列挙）
+OBJS=		${BUILD_DIR}/main.o \
+		${BUILD_DIR}/plane.o \
+		${BUILD_DIR}/target.o \
+		${BUILD_DIR}/camera.o \
+		${BUILD_DIR}/terrain.o \
+		${BUILD_DIR}/renderer.o
+
+OBJS_DEBUG=	${BUILD_DIR}/main_debug.o \
+		${BUILD_DIR}/plane_debug.o \
+		${BUILD_DIR}/target_debug.o \
+		${BUILD_DIR}/camera_debug.o \
+		${BUILD_DIR}/terrain_debug.o \
+		${BUILD_DIR}/renderer_debug.o
+
+# デフォルトターゲット
+all: check-deps ${BUILD_DIR} ${TARGET}
+
+debug: check-deps ${BUILD_DIR} ${TARGET_DEBUG}
+
+# 依存ライブラリの存在確認
+check-deps:
+	@echo "Checking dependencies..."
+	@test -f /usr/pkg/include/GLFW/glfw3.h \
+		|| (echo "ERROR: GLFW not found." && false)
+	@test -f /usr/pkg/include/GL/glew.h \
+		|| (echo "ERROR: GLEW not found." && false)
+	@test -f /usr/pkg/lib/libglfw.so \
+		|| test -f /usr/pkg/lib/libglfw.a \
+		|| (echo "ERROR: libglfw not found." && false)
+	@echo "All dependencies found."
+
+# ビルドディレクトリ作成
+${BUILD_DIR}:
+	mkdir -p ${BUILD_DIR}
+
+# リリースビルド：リンク
+${TARGET}: ${OBJS}
+	${CXX} ${CXXFLAGS} ${LDFLAGS} -o ${TARGET} ${OBJS} ${LIBS}
+	@echo "Build complete: ${TARGET}"
+
+# デバッグビルド：リンク
+${TARGET_DEBUG}: ${OBJS_DEBUG}
+	${CXX} ${CXXFLAGS} -g -DDEBUG ${LDFLAGS} -o ${TARGET_DEBUG} ${OBJS_DEBUG} ${LIBS}
+	@echo "Debug build complete: ${TARGET_DEBUG}"
+
+# リリース：コンパイルルール
+${BUILD_DIR}/main.o: src/main.cpp ${HDRS}
+	${CXX} ${CXXFLAGS} ${INCLUDES} -c src/main.cpp -o ${BUILD_DIR}/main.o
+
+${BUILD_DIR}/plane.o: src/plane.cpp ${HDRS}
+	${CXX} ${CXXFLAGS} ${INCLUDES} -c src/plane.cpp -o ${BUILD_DIR}/plane.o
+
+${BUILD_DIR}/target.o: src/target.cpp ${HDRS}
+	${CXX} ${CXXFLAGS} ${INCLUDES} -c src/target.cpp -o ${BUILD_DIR}/target.o
+
+${BUILD_DIR}/camera.o: src/camera.cpp ${HDRS}
+	${CXX} ${CXXFLAGS} ${INCLUDES} -c src/camera.cpp -o ${BUILD_DIR}/camera.o
+
+${BUILD_DIR}/terrain.o: src/terrain.cpp ${HDRS}
+	${CXX} ${CXXFLAGS} ${INCLUDES} -c src/terrain.cpp -o ${BUILD_DIR}/terrain.o
+
+${BUILD_DIR}/renderer.o: src/renderer.cpp ${HDRS}
+	${CXX} ${CXXFLAGS} ${INCLUDES} -c src/renderer.cpp -o ${BUILD_DIR}/renderer.o
+
+# デバッグ：コンパイルルール
+${BUILD_DIR}/main_debug.o: src/main.cpp ${HDRS}
+	${CXX} ${CXXFLAGS} -g -DDEBUG ${INCLUDES} -c src/main.cpp -o ${BUILD_DIR}/main_debug.o
+
+${BUILD_DIR}/plane_debug.o: src/plane.cpp ${HDRS}
+	${CXX} ${CXXFLAGS} -g -DDEBUG ${INCLUDES} -c src/plane.cpp -o ${BUILD_DIR}/plane_debug.o
+
+${BUILD_DIR}/target_debug.o: src/target.cpp ${HDRS}
+	${CXX} ${CXXFLAGS} -g -DDEBUG ${INCLUDES} -c src/target.cpp -o ${BUILD_DIR}/target_debug.o
+
+${BUILD_DIR}/camera_debug.o: src/camera.cpp ${HDRS}
+	${CXX} ${CXXFLAGS} -g -DDEBUG ${INCLUDES} -c src/camera.cpp -o ${BUILD_DIR}/camera_debug.o
+
+${BUILD_DIR}/terrain_debug.o: src/terrain.cpp ${HDRS}
+	${CXX} ${CXXFLAGS} -g -DDEBUG ${INCLUDES} -c src/terrain.cpp -o ${BUILD_DIR}/terrain_debug.o
+
+${BUILD_DIR}/renderer_debug.o: src/renderer.cpp ${HDRS}
+	${CXX} ${CXXFLAGS} -g -DDEBUG ${INCLUDES} -c src/renderer.cpp -o ${BUILD_DIR}/renderer_debug.o
+
+# クリーンアップ
+clean:
+	rm -rf ${BUILD_DIR} ${TARGET} ${TARGET_DEBUG}
+	@echo "Cleanup complete"
+
+# 実行
+run: all
+	./${TARGET}
+
+.PHONY: all debug clean run check-deps
