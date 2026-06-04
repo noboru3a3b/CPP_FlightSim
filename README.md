@@ -38,6 +38,7 @@ PKG_CPP=/usr/pkg/gcc8/bin/cpp
 PKG_LDFLAGS+=-L/usr/pkg/gcc8/lib
 ```
 ```bash
+su
 # Build GLFW
 cd /usr/pkgsrc/graphics/glfw
 make install clean
@@ -45,6 +46,7 @@ make install clean
 # Build GLEW
 cd /usr/pkgsrc/graphics/glew
 make install clean
+exit
 ```
 
 ## On Windows:
