@@ -4,6 +4,10 @@ This is a C++ rewrite of FlightSim.
 Since it's no longer tied to Python, it doesn't need PyOpenGL support!  
 It gives you a bit more freedom.  
 
+The actual work was done by AI.　　
+Design and implementation: Claude 4.5 Sonnet　　
+Debugging: GPT-5 Thinking　　
+　　
 # Library Installation:
 
 ## On Linux:
