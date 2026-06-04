@@ -1,0 +1,92 @@
+# Makefile for Flight Simulator (w64devkit)
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall -Wextra -O2 -Wno-unused-parameter
+DEBUGFLAGS = -g -DDEBUG
+
+# w64devkitのパス（自動検出）
+W64_ROOT = /c/w64devkit
+INCLUDES = -I$(W64_ROOT)/x86_64-w64-mingw32/include -Isrc
+LIBDIRS = -L$(W64_ROOT)/x86_64-w64-mingw32/lib
+
+# リンクライブラリ
+#LIBS = -lglfw3 -lglew32 -lopengl32 -lgdi32 -lwinmm
+# リンクライブラリ（glew32 → :glew32.a に変更）
+#LIBS = -lglfw3 -l:glew32.a -lopengl32 -lgdi32 -lwinmm
+# リンクライブラリ（-lglu32 を追加）
+LIBS = -lglfw3 -l:glew32.a -lopengl32 -lglu32 -lgdi32 -lwinmm
+
+# ディレクトリ
+SRC_DIR = src
+BUILD_DIR = build
+
+# ターゲット
+TARGET = flight_sim.exe
+TARGET_DEBUG = flight_sim_debug.exe
+
+# ソースファイル（src/ディレクトリ内）
+SOURCES = $(SRC_DIR)/main.cpp \
+          $(SRC_DIR)/plane.cpp \
+          $(SRC_DIR)/target.cpp \
+          $(SRC_DIR)/camera.cpp \
+          $(SRC_DIR)/terrain.cpp \
+          $(SRC_DIR)/renderer.cpp
+
+# オブジェクトファイル
+OBJECTS = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
+OBJECTS_DEBUG = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%_debug.o,$(SOURCES))
+
+# ヘッダーファイル
+HEADERS = $(SRC_DIR)/plane.h \
+          $(SRC_DIR)/target.h \
+          $(SRC_DIR)/camera.h \
+          $(SRC_DIR)/terrain.h \
+          $(SRC_DIR)/renderer.h \
+          $(SRC_DIR)/model.h \
+          $(SRC_DIR)/vector3.h \
+          $(SRC_DIR)/common.h
+
+.PHONY: all clean debug run help
+
+all: $(BUILD_DIR) $(TARGET)
+
+debug: CXXFLAGS += $(DEBUGFLAGS)
+debug: $(BUILD_DIR) $(TARGET_DEBUG)
+
+# ビルドディレクトリ作成
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+# リリースビルド
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJECTS) $(LIBDIRS) $(LIBS)
+	@echo "Build complete: $(TARGET)"
+
+# デバッグビルド
+$(TARGET_DEBUG): $(OBJECTS_DEBUG)
+	$(CXX) $(CXXFLAGS) $(DEBUGFLAGS) -o $(TARGET_DEBUG) $(OBJECTS_DEBUG) $(LIBDIRS) $(LIBS)
+	@echo "Debug build complete: $(TARGET_DEBUG)"
+
+# オブジェクトファイルのコンパイル（リリース）
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+# オブジェクトファイルのコンパイル（デバッグ）
+$(BUILD_DIR)/%_debug.o: $(SRC_DIR)/%.cpp $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(DEBUGFLAGS) $(INCLUDES) -c $< -o $@
+
+# クリーンアップ
+clean:
+	rm -rf $(BUILD_DIR) $(TARGET) $(TARGET_DEBUG)
+	@echo "Cleanup complete"
+
+# 実行
+run: $(TARGET)
+	./$(TARGET)
+
+# ヘルプ
+help:
+	@echo "Available targets:"
+	@echo "  all    - Build release version (default)"
+	@echo "  debug  - Build debug version"
+	@echo "  clean  - Remove build files"
+	@echo "  run    - Build and run the program"
