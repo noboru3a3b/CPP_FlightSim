@@ -24,6 +24,27 @@ Amazing, isn't it?
 ```bash
 sudo apt install libglfw3-dev libglew-dev libglu1-mesa-dev freeglut3-dev
 ```
+
+## On NetBSD:
+Configure /etc/mk.conf
+```bash
+# Explicitly specify gcc-8.3 with full path
+GCC_REQD=8
+PKG_CC=/usr/pkg/gcc8/bin/gcc
+PKG_CXX=/usr/pkg/gcc8/bin/g++
+PKG_CPP=/usr/pkg/gcc8/bin/cpp
+
+# Use the gcc-8.3 linker as well
+PKG_LDFLAGS+=-L/usr/pkg/gcc8/lib
+```
+# Build GLFW
+cd /usr/pkgsrc/graphics/glfw
+make install clean
+
+# Build GLEW
+cd /usr/pkgsrc/graphics/glew
+make install clean
+
 ## On Windows:
 
 On Windows, use w64devkit.
