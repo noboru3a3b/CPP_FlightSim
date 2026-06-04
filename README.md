@@ -26,7 +26,7 @@ sudo apt install libglfw3-dev libglew-dev libglu1-mesa-dev freeglut3-dev
 ```
 
 ## On NetBSD:
-Configure /etc/mk.conf
+### Configure /etc/mk.conf
 ```bash
 # Explicitly specify gcc-8.3 with full path
 GCC_REQD=8
@@ -37,6 +37,7 @@ PKG_CPP=/usr/pkg/gcc8/bin/cpp
 # Use the gcc-8.3 linker as well
 PKG_LDFLAGS+=-L/usr/pkg/gcc8/lib
 ```
+### Build library
 ```bash
 su
 # Build GLFW
