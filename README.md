@@ -37,6 +37,7 @@ PKG_CPP=/usr/pkg/gcc8/bin/cpp
 # Use the gcc-8.3 linker as well
 PKG_LDFLAGS+=-L/usr/pkg/gcc8/lib
 ```
+```bash
 # Build GLFW
 cd /usr/pkgsrc/graphics/glfw
 make install clean
@@ -44,6 +45,7 @@ make install clean
 # Build GLEW
 cd /usr/pkgsrc/graphics/glew
 make install clean
+```
 
 ## On Windows:
 
