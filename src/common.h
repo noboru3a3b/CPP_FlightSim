@@ -18,17 +18,26 @@ namespace Config {
     
     // 物理パラメータ
     constexpr float MIN_SPEED = 5.0f;
-    constexpr float MAX_SPEED = 50.0f;
-    constexpr float BANK_RATE = 0.5f;
-    constexpr float RISE_RATE = 0.8f;
-    constexpr float ACCELERATION_RATE = 1.0f;
-    
+
+//    nstexpr float MAX_SPEED = 50.0f;
+//    constexpr float BANK_RATE = 0.5f;
+//    constexpr float RISE_RATE = 0.8f;
+//    constexpr float ACCELERATION_RATE = 1.0f;
+    constexpr float MAX_SPEED = 200.0f;
+    constexpr float BANK_RATE = 1.2f;
+    constexpr float RISE_RATE = 2.5f;
+    constexpr float ACCELERATION_RATE = 1.3f;
+
     // カメラ設定
-    constexpr float FOV = 60.0f;
+//    constexpr float FOV = 60.0f;
+    constexpr float FOV = 75.0f;
+
     constexpr float NEAR_PLANE = 1.0f;
     constexpr float FAR_PLANE = 1000.0f;
     constexpr float CAMERA_LAG_DISTANCE = 50.0f;
-    constexpr float CAMERA_LAG_TIME = 0.1f;
+
+//    constexpr float CAMERA_LAG_TIME = 0.1f;
+    constexpr float CAMERA_LAG_TIME = 0.4f;
     
     // レーダー設定
     constexpr float RADAR_SIZE = 80.0f;
@@ -41,7 +50,9 @@ namespace Config {
     constexpr float TARGET_BLINK_RATE = 1.5f;
     
     // 軌跡設定
-    constexpr int MAX_TRAIL_POINTS = 50;
+//    constexpr int MAX_TRAIL_POINTS = 50;
+//    constexpr float TRAIL_INTERVAL = 0.1f; // 秒
+    constexpr int MAX_TRAIL_POINTS = 100;
     constexpr float TRAIL_INTERVAL = 0.1f; // 秒
 }
 

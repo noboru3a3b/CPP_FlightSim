@@ -122,8 +122,9 @@ void Plane::updatePhysics(float deltaTime) {
     roll = MathUtil::clamp(roll, -60.0f, 60.0f);
 
     // ピッチ更新
-    pitch += riseRate * deltaTime * 0.5f;
-    pitch *= 0.99f; // 減衰
+//    pitch += riseRate * deltaTime * 0.5f;
+    pitch += riseRate * deltaTime* 0.7f;
+	pitch *= 0.99f; // 減衰
     pitch = MathUtil::clamp(pitch, -60.0f, 60.0f);
 
     // スロットルによる速度変化
@@ -167,9 +168,13 @@ void Plane::updatePhysics(float deltaTime) {
     float vz = horizontalVelocity * std::cos(headingRad);
 
     // 位置更新（既存実装の0.5スケールを維持）
-    pos.x += vx * deltaTime * 0.5f;
-    pos.y += vy * deltaTime * 0.5f;
-    pos.z += vz * deltaTime * 0.5f;
+//    pos.x += vx * deltaTime * 0.5f;
+//    pos.y += vy * deltaTime * 0.5f;
+//    pos.z += vz * deltaTime * 0.5f;
+	// 減衰なし
+    pos.x += vx * deltaTime;
+    pos.y += vy * deltaTime;
+    pos.z += vz * deltaTime;
 
     // 衝突判定等はなし（すり抜け）
 }
