@@ -18,6 +18,11 @@ And that's exactly what this project is.
 The porting went smoothly, and including debugging, it was finished in about 10 hours.
 Amazing, isn't it?  
   
+The paper airplane's movement was too sluggish—like it was stuck in honey—so I tweaked the parameters a bit.
+I think it flies a little more snappily now.
+Thanks for suggesting the adjustments, qwen3.5:9b.
+  
+  
 # Library Installation:
 
 ## On Linux:
